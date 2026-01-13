@@ -1,66 +1,43 @@
-import "./App.css";
-import SignIn from "./pages/signin"; // Nama variabel import adalah "SignIn"
-import SignUpPage from "./pages/signup"; // Pastikan nama file ini kecil semua "signup" (sesuai screenshotmu)
-import ErrorPage from "./pages/Error";
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+// Import halaman yang sudah ada
+import SignInPage from "./pages/signin";
+import SignUpPage from "./pages/signup";
 import DashboardPage from "./pages/dashboard";
-import BalancePage from "./pages/balance";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "./context/authContext";
+import BalancePage from "./pages/BalancePage";
+import ErrorPage from "./pages/404";
 
-function App() {
-  const { user } = useContext(AuthContext);
+// 1. IMPORT HALAMAN EXPENSE (Soal No. 3)
+import ExpensePage from "./pages/ExpensePage";
 
-  const RequireAuth = ({ children }) => {
-    return user ? children : <Navigate to="/login" />;
-  };
-
-  const NotRequireAuth = ({ children }) => {
-    return user ? <Navigate to="/" /> : children;
-  };
-
-  const myRouter = createBrowserRouter([
+const App = () => {
+  const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <RequireAuth>
-          <DashboardPage />
-        </RequireAuth>
-      ),
+      element: <DashboardPage />,
       errorElement: <ErrorPage />,
     },
     {
+      path: "/balance",
+      element: <BalancePage />,
+    },
+    // 2. TAMBAHKAN ROUTE UNTUK EXPENSES DI SINI
+    {
+      path: "/expenses",
+      element: <ExpensePage />,
+    },
+    {
       path: "/login",
-      element: (
-        <NotRequireAuth>
-          {/* PERBAIKAN DI SINI: Gunakan <SignIn /> */}
-          <SignIn />
-        </NotRequireAuth>
-      ),
+      element: <SignInPage />,
     },
     {
       path: "/register",
-      element: (
-        <NotRequireAuth>
-          <SignUpPage />
-        </NotRequireAuth>
-      ),
-    },
-    {
-      path: "/balance",
-      element: (
-        <RequireAuth>
-          <BalancePage />
-        </RequireAuth>
-      ),
+      element: <SignUpPage />,
     },
   ]);
 
-  return (
-    <>
-      <RouterProvider router={myRouter} />
-    </>
-  );
-}
+  return <RouterProvider router={router} />;
+};
 
 export default App;

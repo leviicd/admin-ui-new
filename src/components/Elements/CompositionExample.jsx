@@ -11,11 +11,7 @@ function GaugePointer(props) {
   const { color } = props;
   const { valueAngle, outerRadius, cx, cy } = useGaugeState();
 
-  // --- SAFETY CHECK (PENTING) ---
-  // Jika sudut (angle) tidak ketemu atau error (NaN), 
-  // jangan paksa menggambar jarum (return null).
-  // Ini yang mencegah error merah di console Anda.
-  if (valueAngle === null || isNaN(valueAngle) || isNaN(outerRadius)) {
+  if (valueAngle === null) {
     return null;
   }
 
@@ -23,12 +19,6 @@ function GaugePointer(props) {
     x: cx + outerRadius * Math.sin(valueAngle),
     y: cy - outerRadius * Math.cos(valueAngle),
   };
-
-  // Cek lagi apakah koordinat target valid
-  if (isNaN(target.x) || isNaN(target.y)) {
-    return null;
-  }
-  // ------------------------------
 
   return (
     <g>
@@ -44,10 +34,8 @@ function GaugePointer(props) {
 
 export default function CompositionExample(props) {
   const { data } = props;
+  // Mengambil state global theme untuk warna grafik
   const { theme } = React.useContext(ThemeContext);
-
-  // Pastikan data selalu angka. Jika kosong/error, anggap 0.
-  const numericData = Number(data) || 0; 
 
   return (
     <GaugeContainer
@@ -55,12 +43,10 @@ export default function CompositionExample(props) {
       height={80}
       startAngle={-90}
       endAngle={90}
-      // Gunakan data yang sudah diamankan
-      value={numericData}
-
-    
+      value={data}
     >
       <GaugeReferenceArc />
+      {/* Warna fill busur mengikuti tema */}
       <GaugeValueArc sx={{ fill: theme.color }} />
       <GaugePointer color={theme.color} />
     </GaugeContainer>

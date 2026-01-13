@@ -1,88 +1,65 @@
-import React, { useContext, useEffect, useState } from 'react';
-import MainLayout from '../components/Layouts/MainLayout';
-import CardBalance from '../components/Fragments/CardBalance';
-import CardGoal from '../components/Fragments/CardGoal';
-import CardUpcomingBill from '../components/Fragments/CardUpcomingBill';
-import CardRecentTransaction from '../components/Fragments/CardRecentTransaction';
-import CardStatistic from '../components/Fragments/CardStatistic';
-import CardExpenseBeakdown from '../components/Fragments/CardExpenseBeakdown';
-import { transactions, bills, expensesBreakdowns, balances, expensesStatistics } from '../data';
-// Gunakan dataServices (pakai 's')
-import { goalService } from "./services/dataServices";
-import { AuthContext } from '../context/authContext';
-import AppSnackbar from '../components/Elements/AppSnackbar';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import MainLayout from "../components/Layouts/MainLayout";
+import { AuthContext } from "../context/authContext";
 
-function Dashboard() {
-  
-  const { logout } = useContext(AuthContext);
+// Data
+import {
+  balances,
+  goals,
+  expensesStatistics,
+  bills,
+  transactions,
+  expensesBreakdowns,
+} from "../data";
 
-  const [goals, setGoals] = useState({});
+// Fragments
+import CardBalance from "../components/Fragments/CardBalance";
+import CardGoal from "../components/Fragments/CardGoal";
+import CardUpcomingBill from "../components/Fragments/CardUpcomingBill";
+import CardRecentTransaction from "../components/Fragments/CardRecentTransaction";
+import CardStatistic from "../components/Fragments/CardStatistic";
+import CardExpenseBreakdown from "../components/Fragments/CardExpenseBreakdown";
 
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: "",
-    severity: "success",
-  });
+const DashboardPage = () => {
+  const { isAuthenticated } = useContext(AuthContext);
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
+  // 🔐 PROTEKSI HALAMAN (POIN E)
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
-  const fetchGoals = async () => {
-    try {
-      const data = await goalService();
-      setGoals(data);
-    } catch (err) {
-      setSnackbar({
-        open: true,
-        message: "Gagal mengambil data goals",
-        severity: "error",
-      });
-      if (err.status === 401) {
-        logout();
-      }
-    }
-  };
-
-  useEffect(() => {
-    fetchGoals();
-  }, []);
-  
-  console.log(goals);
-  
   return (
-    <>
-      <MainLayout>
-        <div className="grid sm:grid-cols-12 gap-6">
-          <div className="sm:col-span-4">
-           <CardBalance data={balances} />
-          </div>
-          <div className="sm:col-span-4">
-            <CardGoal data={goals} />
-          </div>
-          <div className="sm:col-span-4">
-            <CardUpcomingBill data={bills}/>
-          </div>
-              <div className="sm:col-span-4 sm:row-span-2">
-            <CardRecentTransaction data={transactions} />
-          </div>
-          <div className="sm:col-span-8">
-            <CardStatistic data={expensesStatistics} />
-          </div>
-          <div className="sm:col-span-8">
-            <CardExpenseBeakdown data={expensesBreakdowns} />
-          </div>
+    <MainLayout title="Overview">
+      <div className="grid sm:grid-cols-12 gap-6 h-full font-poppins">
+        {/* BARIS ATAS */}
+        <div className="sm:col-span-4">
+          <CardBalance data={balances} />
         </div>
 
-        <AppSnackbar
-          open={snackbar.open}
-          message={snackbar.message}
-          severity={snackbar.severity}
-          onClose={handleCloseSnackbar}
-        />
-      </MainLayout>
-    </>
-  )
-}
+        <div className="sm:col-span-4">
+          <CardGoal data={goals} />
+        </div>
 
-export default Dashboard;
+        <div className="sm:col-span-4">
+          <CardUpcomingBill data={bills} />
+        </div>
+
+        {/* BARIS TENGAH & BAWAH */}
+        <div className="sm:col-span-4 sm:row-span-2">
+          <CardRecentTransaction data={transactions} />
+        </div>
+
+        <div className="sm:col-span-8">
+          <CardStatistic data={expensesStatistics} />
+        </div>
+
+        <div className="sm:col-span-8">
+          <CardExpenseBreakdown data={expensesBreakdowns} />
+        </div>
+      </div>
+    </MainLayout>
+  );
+};
+
+export default DashboardPage;

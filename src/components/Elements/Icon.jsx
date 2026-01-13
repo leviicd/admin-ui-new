@@ -1,3 +1,5 @@
+import React from "react";
+
 import OverviewSVG from "../../assets/icons/Overview.svg?react";
 import TransactionSVG from "../../assets/icons/Transaction.svg?react";
 import BalanceSVG from "../../assets/icons/wallet.svg?react";
@@ -8,6 +10,7 @@ import SettingSVG from "../../assets/icons/Settings.svg?react";
 import DetailSVG from "../../assets/icons/Icon.svg?react";
 import ChevronRightSVG from "../../assets/icons/chevrons-right.svg?react";
 import LogoutSVG from "../../assets/icons/Icon2.svg?react";
+
 import AdobeSVG from "../../assets/icons/Adobe.svg?react";
 import FigmaSVG from "../../assets/icons/Figma.svg?react";
 import FoodSVG from "../../assets/icons/Food.svg?react";
@@ -17,6 +20,7 @@ import MovieSVG from "../../assets/icons/Movie.svg?react";
 import OtherSVG from "../../assets/icons/Others.svg?react";
 import ShoppingSVG from "../../assets/icons/Shopping.svg?react";
 import TransportSVG from "../../assets/icons/Trasnport.svg?react";
+
 import ArrowRightSVG from "../../assets/icons/arrow-right.svg?react";
 import ArrowDownSVG from "../../assets/icons/Downarrow.svg?react";
 import ArrowUpSVG from "../../assets/icons/Uparrow.svg?react";
@@ -27,12 +31,12 @@ import VisaSVG from "../../assets/icons/Visa_Logo.svg?react";
 import TargetSVG from "../../assets/icons/target.svg?react";
 import AwardSVG from "../../assets/icons/Award.svg?react";
 
-const createIcon =
-  (SVG) =>
-  ({ size = 24, color = "currentColor", ...props }) =>
-    <SVG width={size} height={size} stroke={color} {...props} />;
+const createIcon = (SVG) => ({ size = 24, color = "currentColor", ...props }) => (
+  <SVG width={size} height={size} stroke={color} {...props} />
+);
 
 const Icon = {
+
   Overview: createIcon(OverviewSVG),
   Transaction: createIcon(TransactionSVG),
   Balance: createIcon(BalanceSVG),
@@ -43,6 +47,7 @@ const Icon = {
   Detail: createIcon(DetailSVG),
   ChevronRight: createIcon(ChevronRightSVG),
   Logout: createIcon(LogoutSVG),
+
   Adobe: createIcon(AdobeSVG),
   Figma: createIcon(FigmaSVG),
   Food: createIcon(FoodSVG),
@@ -52,15 +57,16 @@ const Icon = {
   Other: createIcon(OtherSVG),
   Shopping: createIcon(ShoppingSVG),
   Transport: createIcon(TransportSVG),
+
   ArrowRight: createIcon(ArrowRightSVG),
   ArrowDown: createIcon(ArrowDownSVG),
   ArrowUp: createIcon(ArrowUpSVG),
+  ArrowUpRight: createIcon(ArrowUpRightSVG),
   Edit: createIcon(EditSVG),
   Mastercard: createIcon(MastercardSVG),
   Visa: createIcon(VisaSVG),
   Target: createIcon(TargetSVG),
   Award: createIcon(AwardSVG),
-  ArrowUpRight: createIcon(ArrowUpRightSVG),
 };
 
 export default Icon;
